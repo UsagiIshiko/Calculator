@@ -71,5 +71,34 @@ public class MainActivity extends AppCompatActivity {
         button8.setOnClickListener(listener);
         button9.setOnClickListener(listener);
         buttonDot.setOnClickListener(listener);
+
+        // Created a new instance of onClickListener and assigned it to a variable opListener.
+        // OnClick cast to a button to b, reads the text of the button pressed and assigns it to a
+        // String 'op'. Also reads a number from the "newNumber" EditText Widget, with an if command
+        // checking that the operation is in use before performing the operation. It then sets the
+        // operation to the "pendingOperation" TextView.
+        View.OnClickListener opListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Button b = (Button) v;
+                String op = b.getText().toString();
+                String value = newNumber.getText().toString();
+                if (value.length() != 0) {
+                    performOperation(value, op);
+                }
+                pendingOperation = op;
+                displayOperation.setText(pendingOperation);
+            }
+        };
+
+        buttonEquals.setOnClickListener(opListener);
+        buttonDivide.setOnClickListener(opListener);
+        buttonMultiply.setOnClickListener(opListener);
+        buttonMinus.setOnClickListener(opListener);
+        buttonPlus.setOnClickListener(opListener);
+    }
+
+    private void performOperation(String value, String operation) {
+        displayOperation.setText(operation);
     }
 }
