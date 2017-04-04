@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView displayOperation;
 
     // Variables to hold the operands and type of calculations
+    // Class Double is used as it can be set to null, while primitive can't
     private Double operand1 = null;
     private Double operand2 = null;
     private String pendingOperation = "=";
@@ -99,6 +100,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void performOperation(String value, String operation) {
-        displayOperation.setText(operation);
+        // Check to see if operand1 is null.
+        // Not normally done in Java, but this is done in C++ to make sure that if you mistakenly
+        // use = instead of ==, operand1 will never equal null.
+        if (null == operand1) {
+            operand1 = Double.valueOf(value);
+        } else {
+            operand2 = Double.valueOf(value);
+
+            if (pendingOperation.equals("=")) {
+                pendingOperation = operation;
+            }
+            switch (pendingOperation) {
+                case "=":
+                    operand1 = operand2;
+                    break;
+                case "/":
+                    // Divided by Zero check
+                    if (operand2 == 0) {
+                        operand1 = 0.0;
+                    } else {
+                        operand1 /= operand2;
+                    }
+                    break;
+                case "*":
+                    operand1 *= operand2;
+                    break;
+                case "-":
+                    operand1 -= operand2;
+                    break;
+                case "+":
+                    operand1 += operand2;
+                    break;
+            }
+        }
+        //
+        result.setText(operand1.toString());
+        newNumber.setText("");
     }
 }
