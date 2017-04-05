@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Constants
     private static final String STATE_PENDING_OPERATION = "PendingOperation";
-    private static final String STATE_OPERAD1 = "Operand1";
+    private static final String STATE_OPERAND1 = "Operand1";
 
     // Variables to hold the operands and type of calculations
     // Class Double is used as it can be set to null, while primitive can't
@@ -104,6 +104,27 @@ public class MainActivity extends AppCompatActivity {
         buttonMultiply.setOnClickListener(opListener);
         buttonMinus.setOnClickListener(opListener);
         buttonPlus.setOnClickListener(opListener);
+
+        Button buttonNeg = (Button) findViewById(R.id.buttonNeg);
+
+        buttonNeg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String value = newNumber.getText().toString();
+                if (value.length() == 0) {
+                    newNumber.setText("-");
+                } else {
+                    try {
+                        Double doubleValue = Double.valueOf(value);
+                        doubleValue *= -1;
+                        newNumber.setText(doubleValue.toString());
+                    } catch (NumberFormatException e) {
+                        // newNumber was "-" or ".", so clear it
+                        newNumber.setText("");
+                    }
+                }
+            }
+        });
     }
 
     // Code used to save EditText information when changing from Portrait to Landscape and visa versa
@@ -111,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         outState.putString(STATE_PENDING_OPERATION, pendingOperation);
         if (operand1 != null) {
-            outState.putDouble(STATE_OPERAD1, operand1);
+            outState.putDouble(STATE_OPERAND1, operand1);
         }
         super.onSaveInstanceState(outState);
     }
@@ -120,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         pendingOperation = savedInstanceState.getString(STATE_PENDING_OPERATION);
-        operand1 = savedInstanceState.getDouble(STATE_OPERAD1);
+        operand1 = savedInstanceState.getDouble(STATE_OPERAND1);
         displayOperation.setText(pendingOperation);
     }
 
